@@ -27,7 +27,7 @@ releaseComponent =
         version = Str.concat "v" release.version
         releaseLinkElement =
             when release.url is
-                Url releaseUrl -> Html.a [Attribute.href releaseUrl] [Html.text version]
+                Url releaseUrl -> Html.a [Attribute.href releaseUrl, Attribute.target "_blank"] [Html.text version]
         assetElements =
             when release.asset is
                 Url assetUrl -> [copyButtonComponent assetUrl, Html.text " ", Html.code [] [Html.text assetUrl]]
@@ -39,11 +39,11 @@ repoComponent = \repo ->
     fullName = ([repo.owner, repo.name] |> Str.joinWith "/")
     docsElement =
         when repo.homepage is
-            Url url -> Html.a [Attribute.href url] [Icon.book]
+            Url url -> Html.a [Attribute.href url, Attribute.target "_blank"] [Icon.book]
             NoHomepage -> Html.text ""
     repoElement =
         (Url githubUrl) = repo.github
-        Html.a [Attribute.href githubUrl] [Icon.github]
+        Html.a [Attribute.href githubUrl, Attribute.target "_blank"] [Icon.github]
     Html.li [] [
         Html.h2 [Attribute.id fullName] [Html.text fullName, Html.text " ", docsElement, Html.text " ", repoElement],
         Html.p [] [Html.text repo.description],
@@ -83,17 +83,27 @@ main =
                 Html.text data.updatedAt,
                 Html.text ". ",
                 Html.text "Source code for this website can be found on ",
-                Html.a [Attribute.href "https://github.com/Hasnep/roc-packages"] [Html.text "GitHub"],
+                Html.a
+                    [
+                        Attribute.href "https://github.com/Hasnep/roc-packages",
+                        Attribute.target "_blank",
+                    ]
+                    [Html.text "GitHub"],
                 Html.text ". ",
                 Html.text "The data for this website are also available as JSON at ",
-                Html.a [Attribute.href "/data.json"] [Html.text "/data.json"],
+                Html.a
+                    [
+                        Attribute.href "https://hasnep.github.io/roc-packages/data.json",
+                        Attribute.target "_blank",
+                    ]
+                    [Html.text "/data.json"],
                 Html.text ".",
             ],
             Html.p
                 []
                 [
                     Html.text "Made by ",
-                    Html.a [Attribute.href "https://ha.nnes.dev"] [Html.text "Hannes"],
+                    Html.a [Attribute.href "https://ha.nnes.dev", Attribute.target "_blank"] [Html.text "Hannes"],
                     Html.text ".",
                 ],
             Html.h2
