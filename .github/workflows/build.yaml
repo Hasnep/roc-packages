@@ -1,0 +1,49 @@
+name: Build and deploy site
+
+on:
+  # Run on all PRs
+  pull_request:
+  # Run when a PR is merged into main
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and deploy site
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v3
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+      - name: Install Roc
+        uses: hasnep/setup-roc@main
+        with:
+          roc-version: nightly
+      - name: Install Just
+        uses: extractions/setup-just@v2
+      - name: Download data
+        run: just download
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Code generation
+        run: just code_gen
+      - name: Run Pre-commit
+        uses: pre-commit/action@v3.0.0
+        env:
+          # Prevent this action failing when running on the main branch
+          SKIP: no-commit-to-branch
+      - name: Build
+        run: just run
+      - name: Upload site to artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: dist
+      - name: Deploy site
+        uses: actions/deploy-pages@v2
