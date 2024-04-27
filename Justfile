@@ -1,24 +1,31 @@
+root_dir := justfile_directory()
+data_dir := root_dir / "data"
+src_dir := root_dir / "src"
+dist_dir := root_dir / "dist"
+scripts_dir := root_dir / "scripts"
+get_data_script := scripts_dir / "get_data.py"
+
 default: code_gen format check run
 
 download:
-    mkdir -p {{ justfile_directory() / "data" }}
-    python3.12 {{ justfile_directory() / "scripts" / "get_data.py" }} --do-download
+    mkdir -p {{ data_dir }}
+    python3.12 {{ get_data_script }} --do-download
 
 download_dummy:
     mkdir -p {{ justfile_directory() / "data" }}
-    python3.12 {{ justfile_directory() / "scripts" / "get_data.py" }} --do-download --dummy
+    python3.12 {{ get_data_script }} --do-download --dummy
 
 code_gen:
-    python3.12 {{ justfile_directory() / "scripts" / "get_data.py" }} --do-code-gen
-    roc format {{ justfile_directory() / "src" / "Data.roc" }}
+    python3.12 {{ get_data_script }} --do-code-gen
+    roc format {{ src_dir / "Data.roc" }}
 
 format:
-    roc format {{ justfile_directory() / "src" }}
+    roc format {{ src_dir }}
 
 check:
-    roc check {{ justfile_directory() / "src" / "main.roc" }}
+    roc check {{ src_dir / "main.roc" }}
 
 run:
-    mkdir -p {{ justfile_directory() / "dist" }}
-    roc dev {{ justfile_directory() / "src" / "main.roc" }}
-    cp {{ justfile_directory() / "data" / "data.json" }} {{ justfile_directory() / "dist" / "data.json" }}
+    mkdir -p {{ dist_dir }}
+    roc dev {{ src_dir / "main.roc" }}
+    cp {{ data_dir / "data.json" }} {{ dist_dir / "data.json" }}
