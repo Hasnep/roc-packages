@@ -17,12 +17,13 @@ logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler())
 
 
-def get_cli_args() -> tuple[bool, bool]:
+def get_cli_args() -> tuple[bool, bool, bool]:
     parser = argparse.ArgumentParser()
     parser.add_argument("--do-download", action="store_true")
     parser.add_argument("--do-code-gen", action="store_true")
+    parser.add_argument("--dummy", action="store_true")
     args = parser.parse_args()
-    return args.do_download, args.do_code_gen
+    return args.do_download, args.do_code_gen, args.dummy
 
 
 KNOWN_ROC_REPOS = {
@@ -312,17 +313,21 @@ def get_release_info(repo_id: str, tag: str) -> RawRelease:
 
 
 def main():
-    do_download, do_code_gen = get_cli_args()
+    do_download, do_code_gen, is_dummy = get_cli_args()
     data_folder = Path() / "data"
     src_folder = Path() / "src"
     data_file = data_folder / "data.json"
     if do_download:
-        repo_ids = sorted(
-            {repo_id.lower() for repo_id in {*get_repo_ids(), *KNOWN_ROC_REPOS}}
-        )
-        raw_repos = [get_repo_info(repo_id) for repo_id in repo_ids]
-        repos = [Repo.from_raw_repo(raw_repo) for raw_repo in raw_repos]
-        data = Data(repos=repos, updated_at=DateTime.now(tz=UTC))
+        if is_dummy:
+            logger.info("Running in dummy mode.")
+            data = Data(repos=[], updated_at=DateTime.now(tz=UTC))
+        else:
+            repo_ids = sorted(
+                {repo_id.lower() for repo_id in {*get_repo_ids(), *KNOWN_ROC_REPOS}}
+            )
+            raw_repos = [get_repo_info(repo_id) for repo_id in repo_ids]
+            repos = [Repo.from_raw_repo(raw_repo) for raw_repo in raw_repos]
+            data = Data(repos=repos, updated_at=DateTime.now(tz=UTC))
         logger.info(f"Writing to {data_file}.")
         with data_file.open("w") as f:
             json.dump(
