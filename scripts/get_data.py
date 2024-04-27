@@ -28,7 +28,7 @@ def get_cli_args() -> tuple[bool, bool, bool]:
 
 KNOWN_ROC_REPOS = {
     "bhansconnect/roc-fuzz",
-    # "hasnep/roc-colors",
+    "hasnep/roc-colors",
     "hasnep/roc-dataframes",
     "hasnep/roc-hex",
     "hasnep/roc-semver",
@@ -37,16 +37,32 @@ KNOWN_ROC_REPOS = {
     "joseph-salmon/roc-audio-platform-test",
     "jwoudenberg/rvn",
     "kilianvounckx/roc_regex",
+    "lukewilliamboswell/basic-ssg",
     "lukewilliamboswell/roc-ansi",
+    "lukewilliamboswell/roc-cgi-server",
+    "lukewilliamboswell/roc-graphics-mach",
+    "lukewilliamboswell/roc-graphics",
+    "lukewilliamboswell/roc-gui",
+    "lukewilliamboswell/roc-htmx-playground",
+    "lukewilliamboswell/roc-masonry-experiment",
+    "lukewilliamboswell/roc-package-explorations",
+    "lukewilliamboswell/roc-pdf-experiment",
     "lukewilliamboswell/roc-random",
+    "lukewilliamboswell/roc-ray",
+    "lukewilliamboswell/roc-sdl",
+    "lukewilliamboswell/roc-serverless",
+    "lukewilliamboswell/roc-tinvyvg",
+    "lukewilliamboswell/roc-tui",
     "lukewilliamboswell/roc-wasm4",
+    "lukewilliamboswell/roc-zig-package-experiment",
+    "lukewilliamboswell/test_port_audio",
     "mulias/roc-array2d",
     "roc-lang/basic-cli",
     "roc-lang/unicode",
     "subtlesplendor/roc-data",
     "subtlesplendor/roc-parser",
 }
-API_DELAY = 3
+API_DELAY = 0
 
 Json = str | int | float | bool | Mapping[str, "Json"] | Sequence["Json"] | None
 Roc = str | int | float | bool | Mapping[str, "Data"] | Sequence["Data"] | "Tag"
