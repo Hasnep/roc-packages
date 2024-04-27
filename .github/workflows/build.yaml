@@ -32,6 +32,10 @@ jobs:
         run: just download
         env:
           GH_TOKEN: ${{ github.token }}
+        if: ${{ github.event_name == 'push' }}
+      - name: Get dummy data for CI
+        run: just download_dummy
+        if: ${{ github.event_name == 'pull_request' }}
       - name: Code generation
         run: just code_gen
       - name: Run Pre-commit
@@ -47,3 +51,4 @@ jobs:
           path: dist
       - name: Deploy site
         uses: actions/deploy-pages@v2
+        if: ${{ github.event_name == 'push' }}
