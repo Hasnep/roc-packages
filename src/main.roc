@@ -44,10 +44,28 @@ repoComponent = \repo ->
     repoElement =
         (Url githubUrl) = repo.github
         Html.a [Attribute.href githubUrl, Attribute.target "_blank"] [Icon.github]
+    repoTitleElement = Html.h2 [Attribute.id fullName] [Html.text fullName, Html.text " ", docsElement, Html.text " ", repoElement]
+    repoDescriptionElement = Html.p [] [Html.text repo.description]
+    latestReleaseElement =
+        repo.releases
+        |> List.first
+        |> Result.map releaseComponent
+        |> Result.withDefault (Html.text "")
+    olderReleasesElement =
+        olderReleases = repo.releases |> List.dropFirst 1
+        when olderReleases is
+            [] -> Html.text ""
+            _ ->
+                Html.details [] [
+                    Html.summary [] [Html.text "Other releases"],
+                    Html.ul [] (List.map olderReleases releaseComponent),
+                ]
+
     Html.li [] [
-        Html.h2 [Attribute.id fullName] [Html.text fullName, Html.text " ", docsElement, Html.text " ", repoElement],
-        Html.p [] [Html.text repo.description],
-        Html.ul [] (List.map repo.releases releaseComponent),
+        repoTitleElement,
+        repoDescriptionElement,
+        latestReleaseElement,
+        olderReleasesElement,
     ]
 
 main =
