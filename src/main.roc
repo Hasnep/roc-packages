@@ -74,15 +74,13 @@ main =
         |> List.keepIf (\repo -> List.len repo.releases > 0)
         |> List.sortWith (\a, b -> Num.compare a.updatedAt b.updatedAt)
         |> List.reverse
-    tableOfContentsElement = Html.ul
-        []
-        (
-            List.map
-                repos
-                (\repo ->
-                    fullName = ([repo.owner, repo.name] |> Str.joinWith "/")
-                    Html.li [] [Html.a [Attribute.href (Str.concat "#" fullName)] [Html.text fullName]])
-        )
+    tableOfContentsElement =
+        listItems = List.map
+            repos
+            (\repo ->
+                fullName = ([repo.owner, repo.name] |> Str.joinWith "/")
+                Html.li [] [Html.a [Attribute.href (Str.concat "#" fullName)] [Html.text fullName]])
+        Html.ul [] listItems
     headElement = Html.head [] [
         Html.meta [Attribute.charset "utf-8"],
         Html.title [] [Html.text "Roc Packages"],
