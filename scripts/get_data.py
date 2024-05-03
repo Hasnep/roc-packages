@@ -27,16 +27,27 @@ def get_cli_args() -> tuple[bool, bool, bool]:
 
 
 KNOWN_ROC_REPOS = {
+    "agu-z/roc-gql",
+    "bhansconnect/rcc",
+    "bhansconnect/roc-async",
+    "bhansconnect/roc-dict",
+    "bhansconnect/roc-ecs",
     "bhansconnect/roc-fuzz",
+    "bhansconnect/roc-microbit",
+    "bhansconnect/roc-todos",
     "hasnep/roc-colors",
     "hasnep/roc-dataframes",
     "hasnep/roc-hex",
     "hasnep/roc-semver",
     "hasnep/roc-svg",
+    "isaacvando/gob",
+    "isaacvando/roc-aws-lambda",
+    "isaacvando/rtl",
     "jancvanb/roc-random",
     "joseph-salmon/roc-audio-platform-test",
     "jwoudenberg/rvn",
     "kilianvounckx/roc_regex",
+    "lindskogen/roc-raytracer",
     "lukewilliamboswell/basic-ssg",
     "lukewilliamboswell/roc-ansi",
     "lukewilliamboswell/roc-cgi-server",
@@ -44,8 +55,10 @@ KNOWN_ROC_REPOS = {
     "lukewilliamboswell/roc-graphics",
     "lukewilliamboswell/roc-gui",
     "lukewilliamboswell/roc-htmx-playground",
+    "lukewilliamboswell/roc-json",
     "lukewilliamboswell/roc-masonry-experiment",
     "lukewilliamboswell/roc-package-explorations",
+    "lukewilliamboswell/roc-parser",
     "lukewilliamboswell/roc-pdf-experiment",
     "lukewilliamboswell/roc-random",
     "lukewilliamboswell/roc-ray",
@@ -57,10 +70,22 @@ KNOWN_ROC_REPOS = {
     "lukewilliamboswell/roc-zig-package-experiment",
     "lukewilliamboswell/test_port_audio",
     "mulias/roc-array2d",
+    "ostcar/kingfisher",
     "roc-lang/basic-cli",
+    "roc-lang/roc-script",
     "roc-lang/unicode",
     "subtlesplendor/roc-data",
     "subtlesplendor/roc-parser",
+    "travisstaloch/roc-cli-platform-zig",
+}
+KNOWN_NOT_PACKAGE_REPOS = {
+    "bhansconnect/monkey-roc",
+    "hasnep/bundle-roc-library",
+    "hasnep/pre-commit-roc",
+    "hasnep/setup-roc",
+    "lukewilliamboswell/roc-awesome",
+    "lukewilliamboswell/roc-package-explorations",
+    "roc-lang/roc",
 }
 API_DELAY = 0
 
@@ -292,11 +317,19 @@ def run_gh_cli_command(*args: str) -> str:
 
 
 def get_repo_ids() -> Set[str]:
-    logger.info("Getting repo ids.")
-    stdout = run_gh_cli_command(
-        "search", "repos", "--language=roc", "--limit=1000", "--json=fullName"
+    logger.info("Getting repos by main language.")
+    repos_by_main_language = json.loads(
+        run_gh_cli_command(
+            "search", "repos", "--language=roc", "--limit=1000", "--json=fullName"
+        )
     )
-    repos = json.loads(stdout)
+    logger.info("Getting repos by topic.")
+    repos_by_topic = json.loads(
+        run_gh_cli_command(
+            "search", "repos", "--topic=roc-lang", "--limit=1000", "--json=fullName"
+        )
+    )
+    repos = [*repos_by_main_language, *repos_by_topic]
     return {r["fullName"] for r in repos}
 
 
@@ -339,7 +372,9 @@ def main():
             data = Data(repos=[], updated_at=DateTime.now(tz=UTC))
         else:
             repo_ids = sorted(
-                {repo_id.lower() for repo_id in {*get_repo_ids(), *KNOWN_ROC_REPOS}}
+                {
+                    repo_id.lower() for repo_id in {*get_repo_ids(), *KNOWN_ROC_REPOS}
+                }.difference(repo_id.lower() for repo_id in KNOWN_NOT_PACKAGE_REPOS)
             )
             raw_repos = [get_repo_info(repo_id) for repo_id in repo_ids]
             repos = [Repo.from_raw_repo(raw_repo) for raw_repo in raw_repos]
