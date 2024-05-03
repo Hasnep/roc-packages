@@ -87,7 +87,7 @@ KNOWN_NOT_PACKAGE_REPOS = {
     "lukewilliamboswell/roc-package-explorations",
     "roc-lang/roc",
 }
-API_DELAY = 0
+API_DELAY = 3
 
 Json = str | int | float | bool | Mapping[str, "Json"] | Sequence["Json"] | None
 Roc = str | int | float | bool | Mapping[str, "Data"] | Sequence["Data"] | "Tag"
