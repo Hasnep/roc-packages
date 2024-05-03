@@ -62,7 +62,7 @@ KNOWN_ROC_REPOS = {
     "subtlesplendor/roc-data",
     "subtlesplendor/roc-parser",
 }
-API_DELAY = 0
+API_DELAY = 3
 
 Json = str | int | float | bool | Mapping[str, "Json"] | Sequence["Json"] | None
 Roc = str | int | float | bool | Mapping[str, "Data"] | Sequence["Data"] | "Tag"
