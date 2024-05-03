@@ -41,11 +41,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1713968789,
-        "narHash": "sha256-Gue8iwW3ZtCQs3EZKhk/i0uLaoUDfW1dpnaZ67MH64o=",
+        "lastModified": 1714684175,
+        "narHash": "sha256-XCNM46Dv8er4F88S38VUjSK1ykVPmfxDTk+viGMbJOE=",
         "owner": "cachix",
         "repo": "devenv",
-        "rev": "b26b52a4dac68bdc305f6b9df948c97f49b2c3ee",
+        "rev": "b705b936cfb1144951f9bf33d02c7ffd02560d26",
         "type": "github"
       },
       "original": {
@@ -469,17 +469,17 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1713924270,
-        "narHash": "sha256-SGTH41+2feBPBz8CFQllxA7SkTy2eCIwYooFCPNorJc=",
+        "lastModified": 1714520666,
+        "narHash": "sha256-j6lHV8CA2IcV2JJaUN57nesOflal/q3e4ikfWhGL1bY=",
         "owner": "roc-lang",
         "repo": "roc",
-        "rev": "d67ba43d494c90b676fa485212947dd251570613",
+        "rev": "156bbae81c5c0cc0db4d095c0f6219b81c43f070",
         "type": "github"
       },
       "original": {
         "owner": "roc-lang",
         "repo": "roc",
-        "rev": "d67ba43d494c90b676fa485212947dd251570613",
+        "rev": "156bbae81c5c0cc0db4d095c0f6219b81c43f070",
         "type": "github"
       }
     },
