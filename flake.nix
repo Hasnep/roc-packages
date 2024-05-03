@@ -51,7 +51,7 @@
                 pkgs.pre-commit
                 pkgs.python312
               ];
-              enterShell = "pre-commit install";
+              enterShell = "pre-commit install --overwrite";
             }
           ];
         };
