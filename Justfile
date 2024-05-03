@@ -9,11 +9,7 @@ default: code_gen format check run
 
 download:
     mkdir -p {{ data_dir }}
-    python3.12 {{ get_data_script }} --do-download
-
-download_dummy:
-    mkdir -p {{ justfile_directory() / "data" }}
-    python3.12 {{ get_data_script }} --do-download --dummy
+    python3.12 {{ get_data_script }} --do-download {{ if env("DUMMY") == "true" { "--dummy" } else { "" } }}
 
 code_gen:
     python3.12 {{ get_data_script }} --do-code-gen

@@ -16,30 +16,26 @@ jobs:
       pages: write
       id-token: write
     steps:
-      - name: Checkout the repo
-        uses: actions/checkout@v3
-      - name: Install Python
-        uses: actions/setup-python@v4
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Cache Nix environment
+        uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Use Nix dev shell for subsequent steps
+        uses: rrbutani/use-nix-shell-action@v1
         with:
-          python-version: "3.12"
-      - name: Install Roc
-        uses: hasnep/setup-roc@main
-        with:
-          roc-version: nightly
-      - name: Install Just
-        uses: extractions/setup-just@v2
+          extraNixOptions: --impure --accept-flake-config
       - name: Download data
         run: just download
         env:
           GH_TOKEN: ${{ github.token }}
-        if: ${{ github.event_name == 'push' }}
-      - name: Get dummy data for CI
-        run: just download_dummy
-        if: ${{ github.event_name == 'pull_request' }}
+          # Skip downloading data when running on a PR
+          DUMMY: ${{ github.event_name == 'pull_request' }}
       - name: Code generation
         run: just code_gen
       - name: Run Pre-commit
-        uses: pre-commit/action@v3.0.0
+        run: pre-commit run --all-files
         env:
           # Prevent this action failing when running on the main branch
           SKIP: no-commit-to-branch
