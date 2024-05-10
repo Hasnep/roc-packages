@@ -423,7 +423,8 @@ def main():
                     """
                     interface Data exposes [data] imports []
 
-                    Release : { version : Str, url : [Url Str], asset : [Url Str, NoAssetUrl] }
+                    Release : { version : Str, url : [Url Str], asset : [Url Str, NoAssetUrl], publishedAt : Str }
+
                     Repo : {
                         name : Str,
                         owner : Str,
@@ -431,9 +432,10 @@ def main():
                         homepage : [Url Str, NoHomepage],
                         github : [Url Str],
                         updatedAt : U64,
-                        releases : List Release
+                        releases : List Release,
                     }
-                    data : {repos:List Repo,updatedAt:Str}
+
+                    data : { repos : List Repo, updatedAt : Str }
                     data =
                     """
                 ).rstrip()
