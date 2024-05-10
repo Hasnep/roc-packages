@@ -135,6 +135,7 @@ class RawRelease(TypedDict):
     tagName: str
     url: str
     assets: list[RawAsset]
+    publishedAt: str
 
 
 class Release:
@@ -147,18 +148,23 @@ class Release:
                 (a["url"] for a in raw_release["assets"] if is_bundle_url(a["url"])),
                 None,
             ),
+            published_at=DateTime.fromisoformat(raw_release["publishedAt"]),
         )
 
-    def __init__(self, version: str, url: str, asset_url: str | None):
+    def __init__(
+        self, version: str, url: str, asset_url: str | None, published_at: DateTime
+    ):
         self.version = version
         self.url = url
         self.asset_url = asset_url
+        self.published_at = published_at
 
     def to_dict(self) -> Json:
         return {
             "version": self.version,
             "url": self.url,
             "asset_url": self.asset_url,
+            "published_at": self.published_at.isoformat(),
         }
 
     @classmethod
@@ -167,6 +173,7 @@ class Release:
             version=release_dict["version"],
             url=release_dict["url"],
             asset_url=release_dict["asset_url"],
+            published_at=DateTime.fromisoformat(release_dict["published_at"]),
         )
 
     def to_roc(self) -> Roc:
@@ -178,11 +185,12 @@ class Release:
                 else Tag("NoAssetUrl")
             ),
             "url": Tag("Url", self.url),
+            "publishedAt": self.published_at.isoformat(),
         }
 
 
 def sort_releases(releases: list[Release]) -> list[Release]:
-    return sorted(releases, key=lambda r: r.version, reverse=True)
+    return sorted(releases, key=lambda r: r.published_at, reverse=True)
 
 
 class RawRepo(TypedDict):
@@ -367,7 +375,11 @@ def get_release_info(repo_id: str, tag: str) -> RawRelease:
     logger.info(f"Getting info for release {tag} in {repo_id}.")
     return json.loads(
         run_gh_cli_command(
-            "release", "view", tag, f"--repo={repo_id}", "--json=tagName,assets,url"
+            "release",
+            "view",
+            tag,
+            f"--repo={repo_id}",
+            "--json=" + ",".join(["tagName", "assets", "url", "publishedAt"]),
         )
     )
 
