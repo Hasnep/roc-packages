@@ -4,12 +4,13 @@ src_dir := root_dir / "src"
 dist_dir := root_dir / "dist"
 scripts_dir := root_dir / "scripts"
 get_data_script := scripts_dir / "get_data.py"
+is_dummy_mode := env("DUMMY", "false")
 
 default: code_gen format check run
 
 download:
     mkdir -p {{ data_dir }}
-    python3.12 {{ get_data_script }} --do-download {{ if env("DUMMY") == "true" { "--dummy" } else { "" } }}
+    python3.12 {{ get_data_script }} --do-download {{ if is_dummy_mode == "true" { "--dummy" } else { "" } }}
 
 code_gen:
     python3.12 {{ get_data_script }} --do-code-gen
