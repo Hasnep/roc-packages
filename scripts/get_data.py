@@ -94,7 +94,7 @@ Roc = str | int | float | bool | Mapping[str, "Data"] | Sequence["Data"] | "Tag"
 
 
 def is_bundle_url(url: str) -> bool:
-    return re.match(r"[a-zA-Z0-9_-]{43}\.tar(?:\.br|\.gz)?$", url) is not None
+    return re.match(r"^.+?[a-zA-Z0-9_-]{43}\.tar(?:\.br|\.gz)?$", url) is not None
 
 
 @dataclass
