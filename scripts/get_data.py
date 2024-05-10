@@ -10,7 +10,7 @@ import shlex
 from dataclasses import dataclass
 import argparse
 from datetime import UTC, datetime as DateTime
-
+import re
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -93,6 +93,10 @@ Json = str | int | float | bool | Mapping[str, "Json"] | Sequence["Json"] | None
 Roc = str | int | float | bool | Mapping[str, "Data"] | Sequence["Data"] | "Tag"
 
 
+def is_bundle_url(url: str) -> bool:
+    return re.match(r"[a-zA-Z0-9_-]{43}\.tar(?:\.br|\.gz)?$", url) is not None
+
+
 @dataclass
 class Tag:
     name: str
@@ -123,10 +127,14 @@ def render_roc(data: Roc) -> str:
             )
 
 
+class RawAsset(TypedDict):
+    url: str
+
+
 class RawRelease(TypedDict):
     tagName: str
     url: str
-    assets: list[dict[str, Json]]
+    assets: list[RawAsset]
 
 
 class Release:
@@ -135,7 +143,10 @@ class Release:
         return cls(
             version=raw_release["tagName"].removeprefix("v"),
             url=raw_release["url"],
-            asset_url=next((a["url"] for a in raw_release["assets"]), None),
+            asset_url=next(
+                (a["url"] for a in raw_release["assets"] if is_bundle_url(a["url"])),
+                None,
+            ),
         )
 
     def __init__(self, version: str, url: str, asset_url: str | None):
