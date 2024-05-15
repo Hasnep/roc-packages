@@ -1,13 +1,12 @@
 module [book, github]
 
 import svg.Svg exposing [svg, g, path, render]
-import svg.Attribute exposing [d, id, xmlns, xmlnsXlink, x, y, viewBox, style, height, width]
+import svg.Attribute exposing [d, xmlns, xmlnsXlink, x, y, viewBox, style, height, width]
 import html.Html
 
 book =
     svg
         [
-            id "Layer_1",
             xmlns "http://www.w3.org/2000/svg",
             xmlnsXlink "http://www.w3.org/1999/xlink",
             x "0px",
