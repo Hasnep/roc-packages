@@ -7,7 +7,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     roc = {
-      url = "github:roc-lang/roc?rev=156bbae81c5c0cc0db4d095c0f6219b81c43f070";
+      url = "github:roc-lang/roc?rev=e5ea6dc461710e4e24dedb64ae651686b500fc6a";
     };
   };
 

@@ -1,4 +1,8 @@
-interface Icon exposes [book, github] imports [svg.Svg.{ svg, g, path, render }, svg.Attribute.{ d, id, xmlns, xmlnsXlink, x, y, viewBox, style, height, width }, html.Html]
+module [book, github]
+
+import svg.Svg exposing [svg, g, path, render]
+import svg.Attribute exposing [d, id, xmlns, xmlnsXlink, x, y, viewBox, style, height, width]
+import html.Html
 
 book =
     svg
