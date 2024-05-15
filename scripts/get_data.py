@@ -421,7 +421,7 @@ def main():
             f.write(
                 dedent(
                     """
-                    interface Data exposes [data] imports []
+                    module [Release, Repo, data]
 
                     Release : { version : Str, url : [Url Str], asset : [Url Str, NoAssetUrl], publishedAt : Str }
 

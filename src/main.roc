@@ -1,20 +1,16 @@
-app "roc-packages"
-    packages {
-        cli: "https://github.com/roc-lang/basic-cli/releases/download/0.9.0/oKWkaruh2zXxin_xfsYsCJobH1tO8_JvNkFzDwwzNUQ.tar.br",
-        html: "https://github.com/Hasnep/roc-html/releases/download/v0.4.0/sS6DMu08ogvM7j5S4E-A6VwdwQiVPlh6DbrTHbBAhZw.tar.br",
-        svg: "https://github.com/Hasnep/roc-svg/releases/download/v0.0.7/vVYSN9mO3igMwoYeu9RtQAnfVFk0Ur2DGWkX9gwHzIE.tar.br",
-    }
-    imports [
-        cli.File,
-        cli.Path,
-        cli.Stdout,
-        cli.Task,
-        html.Html,
-        html.Attribute,
-        Data.{ data, Repo, Release },
-        Icon,
-    ]
-    provides [main] to cli
+app [main] {
+    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.11.0/SY4WWMhWQ9NvQgvIthcv15AUeA7rAIJHAHgiaSHGhdY.tar.br",
+    html: "https://github.com/Hasnep/roc-html/releases/download/v0.6.0/IOyNfA4U_bCVBihrs95US9Tf5PGAWh3qvrBN4DRbK5c.tar.br",
+    svg: "https://github.com/Hasnep/roc-svg/releases/download/v0.0.7/vVYSN9mO3igMwoYeu9RtQAnfVFk0Ur2DGWkX9gwHzIE.tar.br",
+}
+
+import cli.File
+import cli.Stdout
+import cli.Task
+import html.Html
+import html.Attribute
+import Data exposing [data, Repo, Release]
+import Icon
 
 copyButtonComponent = \textToCopy ->
     js = Str.joinWith ["try {navigator.clipboard.writeText(`", textToCopy, "`);} catch (e) {};"] ""
@@ -131,7 +127,7 @@ main =
         ],
     ]
     indexPage = Html.html [Attribute.lang "en"] [headElement, bodyElement] |> Html.render
-    result <- File.writeUtf8 (Path.fromStr "dist/index.html") indexPage |> Task.attempt
+    result <- File.writeUtf8 "dist/index.html" indexPage |> Task.attempt
     when result is
         Ok _ -> Stdout.line "Done!"
         Err _ -> crash "oh no"
