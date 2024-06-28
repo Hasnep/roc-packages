@@ -1,60 +1,41 @@
 {
   inputs = {
-    nixpkgs.url = "github:cachix/devenv-nixpkgs/rolling";
-    systems.url = "github:nix-systems/default";
-    devenv = {
-      url = "github:cachix/devenv";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    roc = {
-      url = "github:roc-lang/roc?rev=e5ea6dc461710e4e24dedb64ae651686b500fc6a";
-    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    roc.url = "github:roc-lang/roc?rev=f8c6786502bc253ab202a55e2bccdcc693e549c8";
   };
 
   nixConfig = {
-    extra-trusted-public-keys = [
-      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-      "roc-lang.cachix.org-1:6lZeqLP9SadjmUbskJAvcdGR2T5ViR57pDVkxJQb8R4="
-    ];
-    extra-trusted-substituters = ["https://devenv.cachix.org" "https://roc-lang.cachix.org"];
+    extra-trusted-public-keys = "roc-lang.cachix.org-1:6lZeqLP9SadjmUbskJAvcdGR2T5ViR57pDVkxJQb8R4=";
+    extra-trusted-substituters = "https://roc-lang.cachix.org";
   };
 
-  outputs = {
+  outputs = inputs @ {
     self,
     nixpkgs,
-    devenv,
-    systems,
+    flake-parts,
     roc,
     ...
-  } @ inputs: let
-    forEachSystem = nixpkgs.lib.genAttrs (import systems);
-  in {
-    packages = forEachSystem (system: {
-      devenv-up = self.devShells.${system}.default.config.procfileScript;
-    });
-
-    devShells =
-      forEachSystem
-      (system: let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in {
-        default = devenv.lib.mkShell {
-          inherit inputs pkgs;
-          modules = [
-            {
-              # https://devenv.sh/reference/options/
-              name = "roc-packages";
-              packages = [
-                roc.packages.${system}.cli
-                pkgs.alejandra
-                pkgs.just
-                pkgs.pre-commit
-                pkgs.python312
-              ];
-              enterShell = "pre-commit install --overwrite";
-            }
+  }:
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = ["aarch64-darwin" "aarch64-linux" "x86_64-darwin" "x86_64-linux"];
+      perSystem = {
+        inputs',
+        pkgs,
+        ...
+      }: {
+        devShells.default = pkgs.mkShell {
+          name = "roc-packages";
+          packages = [
+            inputs'.roc.packages.cli
+            pkgs.alejandra
+            pkgs.just
+            pkgs.pre-commit
+            pkgs.python312
           ];
+          shellHook = "pre-commit install --overwrite";
         };
-      });
-  };
+        formatter=pkgs.alejandra;
+      };
+    };
 }

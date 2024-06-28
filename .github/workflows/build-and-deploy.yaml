@@ -25,7 +25,7 @@ jobs:
       - name: Use Nix dev shell for subsequent steps
         uses: rrbutani/use-nix-shell-action@v1
         with:
-          extraNixOptions: --impure --accept-flake-config
+          extraNixOptions: --accept-flake-config
       - name: Download data
         run: just download
         env:
