@@ -112,7 +112,7 @@ def render_roc(data: Roc) -> str:
                 else data.name
             )
         case str():
-            return f'"{data}"'
+            return '"' + data.replace(r'"', r"\"") + '"'
         case int():
             return str(data)
         case float():
