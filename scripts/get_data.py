@@ -64,7 +64,6 @@ KNOWN_ROC_REPOS = {
     "lukewilliamboswell/roc-ray",
     "lukewilliamboswell/roc-sdl",
     "lukewilliamboswell/roc-serverless",
-    "lukewilliamboswell/roc-ssg",
     "lukewilliamboswell/roc-tinvyvg",
     "lukewilliamboswell/roc-tui",
     "lukewilliamboswell/roc-wasm4",
