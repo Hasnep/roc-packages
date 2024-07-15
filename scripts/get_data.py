@@ -84,7 +84,9 @@ KNOWN_NOT_PACKAGE_REPOS = {
     "hasnep/bundle-roc-library",
     "hasnep/pre-commit-roc",
     "hasnep/roc-iced",
+    "hasnep/roc-semver",
     "hasnep/setup-roc",
+    "imclerran/roc-start",
     "isaacvando/aoc",
     "jackocoolio/some",
     "lukewilliamboswell/roc-awesome",
@@ -95,6 +97,7 @@ KNOWN_NOT_PACKAGE_REPOS = {
     "lukewilliamboswell/roc-platform-template-swift",
     "lukewilliamboswell/roc-platform-template-wasi",
     "lukewilliamboswell/roc-platform-template-zig",
+    "lukewilliamboswell/roc-ssg",
     "mpizenberg/crypto-0-to-hero",
     "roc-lang/roc",
 }
