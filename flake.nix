@@ -35,7 +35,7 @@
           ];
           shellHook = "pre-commit install --overwrite";
         };
-        formatter=pkgs.alejandra;
+        formatter = pkgs.alejandra;
       };
     };
 }
