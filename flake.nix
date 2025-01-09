@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    roc.url = "github:roc-lang/roc?rev=f8c6786502bc253ab202a55e2bccdcc693e549c8";
+    roc.url = "github:roc-lang/roc?rev=d7825428df72e3685be7291284c5eeeb1300a7f6";
   };
 
   nixConfig = {
@@ -18,7 +18,7 @@
     ...
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = ["aarch64-darwin" "aarch64-linux" "x86_64-darwin" "x86_64-linux"];
+      systems = [ "aarch64-darwin" "aarch64-linux" "x86_64-darwin" "x86_64-linux"      ];
       perSystem = {
         inputs',
         pkgs,
