@@ -123,7 +123,6 @@ main =
                 [Html.text "Index"],
             tableOfContentsElement,
             Html.ul [Attribute.class "packages"] (List.map repos repoComponent),
-
         ],
     ]
     indexPage = Html.html [Attribute.lang "en"] [headElement, bodyElement] |> Html.render
