@@ -28,10 +28,15 @@
           name = "roc-packages";
           packages = [
             inputs'.roc.packages.cli
+            pkgs.actionlint
             pkgs.alejandra
+            pkgs.check-jsonschema
             pkgs.just
+            pkgs.nodePackages.prettier
             pkgs.pre-commit
             pkgs.python312
+            pkgs.python312Packages.pre-commit-hooks
+            pkgs.ruff
           ];
           shellHook = "pre-commit install --overwrite";
         };
