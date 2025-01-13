@@ -22,9 +22,9 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+        uses: DeterminateSystems/nix-installer-action@v16
       - name: Cache Nix environment
-        uses: DeterminateSystems/magic-nix-cache-action@main
+        uses: DeterminateSystems/magic-nix-cache-action@v8
       - name: Use Nix dev shell for subsequent steps
         uses: rrbutani/use-nix-shell-action@v1
         with:
@@ -45,9 +45,9 @@ jobs:
       - name: Build
         run: just run
       - name: Upload site to artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: dist
       - name: Deploy site
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
         if: ${{ github.event_name != 'pull_request' }}
